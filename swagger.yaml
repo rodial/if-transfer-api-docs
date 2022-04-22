@@ -1,0 +1,1850 @@
+openapi: 3.0.1
+info:
+  title: Transfers
+  version: 1.0.1
+servers:
+  - url: https://sandbox-api.finance/v1/{instanceId}
+    description: Sandbox
+    variables: {}
+  - url: https://api.finance/v1/{instanceId}
+    description: Production
+    variables: {}
+paths:
+  /incoming-transfers:
+    get:
+      summary: List incoming transfers
+      operationId: incoming-transfers.list
+      responses:
+        '200':
+          description: Incoming transfer list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IncomingTransferListResponse'
+  /beneficiaries/{beneficiaryId}/bank-accounts:
+    parameters:
+      - name: beneficiaryId
+        in: path
+        description: ID of source beneficiary
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: List Beneficiary Bank Accounts
+      operationId: beneficiarybankaccount.list
+      responses:
+        '200':
+          description: Beneficiary bank account list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryBankAccountsListResponse'
+    post:
+      summary: Create beneficiaryBankAccount
+      operationId: beneficiaryBankAccount.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '201':
+          description: Beneficiary created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryCreateResponse'
+  /beneficiaries/{beneficiaryId}/bank-accounts/{id}:
+    parameters:
+      - name: beneficiaryId
+        in: path
+        description: ID of source beneficiary
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        description: ID of source beneficiary account
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get beneficiary bank account
+      operationId: beneficiary.get
+      responses:
+        '200':
+          description: Beneficiary bank account resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryBankAccountsGetResponse'
+    patch:
+      summary: Update a beneficiary
+      operationId: beneficiaryBankAccount.update
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '202':
+          description: Beneficiary Bank Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryUpdateResponse'
+  /beneficiaries:
+    get:
+      summary: List beneficiaries
+      operationId: beneficiary.list
+      responses:
+        '200':
+          description: Beneficiary list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryListResponse'
+    post:
+      summary: Create beneficiary
+      operationId: beneficiary.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/BeneficiaryCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Beneficiary created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryCreateResponse'
+  /beneficiaries/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the beneficiary in UUID format
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      summary: Get beneficiary
+      operationId: beneficiary.get_1
+      responses:
+        '200':
+          description: Beneficiary resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BeneficiaryGetResponse'
+    patch:
+      summary: Update a beneficiary
+      operationId: beneficiaries.update
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: string
+              format: uuid
+      responses:
+        '202':
+          description: Beneficiary updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientUpdateResponse'
+  /accounts/{accountId}/outgoing-transfer-date-metadata/{transferScope}/{transferScheme}:
+    get:
+      summary: Get date metadata for outgoing transfers
+      operationId: outgoing-transfer-date-metadata.get
+      parameters:
+        - name: accountId
+          in: path
+          description: ID of source account
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: transferScope
+          in: path
+          description: transfer scope
+          required: true
+          schema:
+            $ref: '#/components/schemas/TransferScope'
+        - name: transferScheme
+          in: path
+          description: transfer scheme
+          required: true
+          schema:
+            $ref: '#/components/schemas/TransferScheme'
+      responses:
+        '200':
+          description: Date metadata returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferDateMetadataResponse'
+  /outgoing-transfers:
+    get:
+      summary: List outgoing transfers
+      operationId: outgoing-transfers.list
+      responses:
+        '200':
+          description: Outgoing transfer list returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferListResponse'
+    post:
+      summary: Create outgoing transfer
+      operationId: outgoing-transfers.create
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/OutgoingTransferCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: Outgoing transfer validated successfully using dry run
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferCreateResponse'
+        '201':
+          description: Outgoing transfer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferCreateResponse'
+  /outgoing-transfers/{id}:
+    get:
+      summary: Get outgoing transfer
+      operationId: outgoing-transfers.get
+      parameters:
+        - name: id
+          in: path
+          description: ID of outgoing transfer in UUID format
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Outgoing transfer resource returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferGetResponse'
+    patch:
+      summary: Update outgoing transfer
+      operationId: outgoing-transfers.update
+      parameters:
+        - name: id
+          in: path
+          description: ID of outgoing transfer in UUID format
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/OutgoingTransferUpdateRequest'
+        required: true
+      responses:
+        '202':
+          description: Outgoing transfer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferUpdateResponse'
+  /transfer-reasons/{country}:
+    get:
+      summary: List transfer reasons by country
+      operationId: transfer-reasons.list
+      parameters:
+        - name: country
+          in: path
+          description: Country of source account
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Date metadata returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferReasonListResponse'
+  /accounts/{accountId}/outgoing-transfer-schemes/{destinationCountry}:
+    get:
+      summary: List possible external transfer schemes for given currency and countries
+      operationId: outgoing-transfer-schemes.list
+      parameters:
+        - name: accountId
+          in: path
+          description: ID of source account
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: destinationCountry
+          in: path
+          description: Country of destination account
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transfer schemes returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OutgoingTransferSchemeListResponse'
+components:
+  schemas:
+    Direction:
+      type: string
+      enum:
+        - ASC
+        - DESC
+    IncomingMoneyTransferBankAccount:
+      type: object
+      properties:
+        accountHolderName:
+          type: string
+          description: name of the legal entity which account belongs to
+        alias:
+          maxLength: 30
+          type: string
+          description: alias of account, refer to Accounts section in Guides for details
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        accountNumber:
+          maxLength: 20
+          minLength: 8
+          pattern: ^[0-9]{8,20}$
+          type: string
+          description: account number of account
+          nullable: true
+        iban:
+          maxLength: 31
+          minLength: 15
+          pattern: ^[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{4}([a-zA-Z0-9]?){3,19}$|^[A-Z]{2}\d{5}[0-9A-Z]{13}$
+          type: string
+          description: iban of account
+          nullable: true
+        ledgerNumber:
+          maxLength: 8
+          minLength: 8
+          pattern: ^[0-9]{8,8}$
+          type: string
+          description: unique ledger number of account generated internally
+      description: bank account model of incoming transfers
+    IncomingTransferListConnectContainer:
+      type: object
+      description: connect container
+    IncomingTransferListDataContainer:
+      type: object
+      properties:
+        incomingTransfer:
+          $ref: '#/components/schemas/IncomingTransferResourceQueryInput'
+        incomingTransfers:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomingTransferResource'
+      description: data container
+    IncomingTransferListMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: metadata container
+    IncomingTransferListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/IncomingTransferListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/IncomingTransferListDataContainer'
+        connect:
+          $ref: '#/components/schemas/IncomingTransferListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/IncomingTransferListMetadataContainer'
+      description: response model
+    IncomingTransferListWorkflowContainer:
+      type: object
+      description: workflow container
+    IncomingTransferResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of incoming transfer
+          format: uuid
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+        accountId:
+          type: string
+          description: id of account which is credited by this incoming transfer
+          format: uuid
+        transactionNumber:
+          maxLength: 15
+          minLength: 15
+          type: string
+          description: unique transaction number
+        status:
+          $ref: '#/components/schemas/IncomingTransferStatus'
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of incoming transfer
+        amount:
+          type: number
+          description: amount
+          format: double
+        feeAmount:
+          type: number
+          description: fee amount
+          format: double
+        feeCurrency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of incoming transfer fee
+        outgoingTransferId:
+          type: string
+          description: id of outgoing transfer if this is an internal transfer
+          format: uuid
+        serviceProviderId:
+          type: string
+          description: id assigned by service provider
+        serviceProviderReference:
+          type: string
+          description: reference assigned by service provider
+        senderInformation:
+          type: string
+          description: free text filled by sender
+        senderName:
+          type: string
+          description: name of sender
+        transferDate:
+          type: string
+          description: the date when transfer amount is reflected to account balance
+          format: date
+        receiverAccount:
+          $ref: '#/components/schemas/IncomingMoneyTransferBankAccount'
+        serviceProvider:
+          type: string
+          description: service provider that incoming transfer received from
+        senderAccount:
+          $ref: '#/components/schemas/IncomingMoneyTransferBankAccount'
+        scheme:
+          $ref: '#/components/schemas/TransferScheme'
+        scope:
+          $ref: '#/components/schemas/TransferScope'
+        totalAmount:
+          type: number
+          description: total amount including fee
+      description: incoming transfer model
+    IncomingTransferResourceQueryInput:
+      type: object
+      properties:
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/IncomingTransferStatus'
+        transactionNumber:
+          type: array
+          items:
+            type: string
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        currency:
+          type: array
+          items:
+            type: string
+        serviceProvider:
+          type: array
+          items:
+            type: string
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        senderInformation:
+          type: string
+        senderName:
+          type: string
+    IncomingTransferStatus:
+      type: string
+      description: status of incoming transfer
+      enum:
+        - pending
+        - on-hold
+        - completed
+        - failed
+    NullHandling:
+      type: string
+      enum:
+        - NATIVE
+        - NULLS_FIRST
+        - NULLS_LAST
+    Order:
+      type: object
+      properties:
+        direction:
+          $ref: '#/components/schemas/Direction'
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+        nullHandling:
+          $ref: '#/components/schemas/NullHandling'
+        ascending:
+          type: boolean
+        descending:
+          type: boolean
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          minimum: 0
+          type: integer
+          description: number of elements in this page
+          format: int32
+        number:
+          minimum: 0
+          type: integer
+          description: index of page starting from 0
+          format: int32
+        totalElements:
+          minimum: 0
+          type: integer
+          description: total number of elements in all of the pages
+          format: int64
+          readOnly: true
+        totalPages:
+          minimum: 0
+          type: integer
+          description: number of total pages
+          format: int32
+          readOnly: true
+        sort:
+          $ref: '#/components/schemas/Sort'
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean
+      description: pagination metadata
+    RoutingCodeMap:
+      type: object
+    Sort:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+    TransferScheme:
+      type: string
+      description: external transfer scheme list
+      enum:
+        - swift
+        - sepa
+        - sepa-instant
+        - chaps
+        - bacs
+        - faster-payments
+    TransferScope:
+      type: string
+      description: transfer scope
+      enum:
+        - internal
+        - external
+    BeneficiaryBankAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        accountHolderName:
+          type: string
+        accountHolderType:
+          $ref: '#/components/schemas/LegalEntityType'
+        beneficiaryId:
+          type: string
+          format: uuid
+        country:
+          type: string
+        currency:
+          type: string
+        routingCodes:
+          $ref: '#/components/schemas/RoutingCodeMap'
+        accountNumber:
+          type: string
+        iban:
+          type: string
+        alias:
+          type: string
+        oneTimePasswordId:
+          type: string
+          format: uuid
+        oneTimePassword:
+          type: string
+      description: Beneficiary Bank Account Resource Object
+    BeneficiaryBankAccountsCreateConnectContainerModel:
+      type: object
+    BeneficiaryBankAccountsCreateMetadataContainer:
+      type: object
+    BeneficiaryBankAccountsCreateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+        - migrate
+        - direct
+    BeneficiaryCreateRequestDataContainer:
+      type: object
+      properties:
+        client:
+          $ref: '#/components/schemas/Beneficiary'
+    BeneficiaryCreateResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryCreateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/PlatformAPIConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/PlatformAPIMetadataContainer'
+      description: Beneficiaries API Create Response
+    BeneficiaryCreateWorkflowContainer:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflow'
+      description: workflow container
+    LegalEntityType:
+      type: string
+      enum:
+        - corporate
+        - individual
+    AccountCreateConnectContainer:
+      required:
+        - serviceProvider
+        - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/BeneficiaryCreateConnect'
+        serviceProvider:
+          $ref: '#/components/schemas/ServiceProvider'
+      description: connect container
+    BeneficiaryBankAccountCreateConnect:
+      type: string
+      description: service provider selection type
+      enum:
+        - implicit
+        - explicit
+    BeneficiaryBankAccountCreateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryCreateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsCreateMetadataContainer'
+      description: request model
+    BeneficiaryBankAccountsListWorkflow:
+      type: object
+      description: workflow container
+    BeneficiaryBankAccountListConnectContainer:
+      type: object
+    BeneficiaryBankAccountResourceListQueryInput:
+      type: object
+      properties:
+        clientIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        beneficiaryIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountHolderName:
+          type: string
+        ibanOrAccountNumber:
+          type: string
+        compositeMode:
+          type: boolean
+        clientTitle:
+          type: string
+        clientNumbers:
+          type: array
+          items:
+            type: string
+        routingCodeKey:
+          $ref: '#/components/schemas/RoutingCodeType'
+        routingCodeValue:
+          type: string
+        alias:
+          type: string
+        countries:
+          type: array
+          items:
+            type: string
+        currencies:
+          type: array
+          items:
+            type: string
+        accountHolderType:
+          $ref: '#/components/schemas/LegalEntityType'
+        ibans:
+          type: array
+          items:
+            type: string
+        accountNumbers:
+          type: array
+          items:
+            type: string
+    BeneficiaryBankAccountsListDataContainer:
+      type: object
+      properties:
+        beneficiaryBankAccount:
+          $ref: '#/components/schemas/BeneficiaryBankAccountResourceListQueryInput'
+        beneficiaryBankAccounts:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/BeneficiaryBankAccount'
+    BeneficiaryBankAccountsListMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    BeneficiaryBankAccountsListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsListWorkflow'
+        data:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsListDataContainer'
+        connect:
+          $ref: '#/components/schemas/BeneficiaryBankAccountListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsListMetadataContainer'
+    RoutingCodeType:
+      type: string
+      enum:
+        - bic
+        - sort-code
+        - aba
+        - rtn-canada
+        - clabe
+        - bsb-code
+        - ifsc
+    BeneficiaryBankAccountGetWorkflow:
+      type: object
+      description: workflow container
+    BeneficiaryBankAccountsCreateConnect:
+      type: object
+      description: connect container
+    BeneficiaryBankAccountGetDataContainer:
+      required:
+        - bankAccount
+      type: object
+      properties:
+        bankAccount:
+          $ref: '#/components/schemas/BeneficiaryBankAccount'
+    BeneficiaryBankAccountsGetMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    BeneficiaryBankAccountsGetResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryBankAccountGetWorkflow'
+        data:
+          $ref: '#/components/schemas/BeneficiaryBankAccountGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsCreateConnect'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsGetMetadataContainer'
+    AccountUpdateConnectContainer:
+      type: object
+      description: connect container
+    BeneficiaryBankAccountsUpdateConnect:
+      type: string
+      description: service provider selection type
+      enum:
+        - implicit
+        - explicit
+    BeneficiaryBankAccountsUpdateMetadataContainer:
+      type: object
+    BeneficiaryBankAccountsUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+        - migrate
+        - direct
+    BeneficiaryUpdateRequestDataContainer:
+      type: object
+      properties:
+        beneficiary:
+          type: object
+          additionalProperties:
+            type: object
+    BeneficiaryUpdateResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsUpdateMetadataContainer'
+      description: Beneficiaries API Update Response
+    BeneficiaryBankAccountUpdateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryBankAccountsUpdateMetadataContainer'
+      description: request model
+    Address:
+      type: object
+      properties:
+        country:
+          type: string
+        region:
+          type: string
+        city:
+          type: string
+        street:
+          type: string
+        refinement:
+          type: string
+        postalCode:
+          type: string
+        houseNumber:
+          type: string
+        state:
+          type: string
+        firstLine:
+          type: string
+        secondLine:
+          type: string
+    Beneficiary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        clientId:
+          type: string
+          format: uuid
+        identity:
+          $ref: '#/components/schemas/LegalEntityIdentity'
+        address:
+          $ref: '#/components/schemas/Address'
+        clientRelationType:
+          $ref: '#/components/schemas/LegalEntityRelationType'
+        screeningStatus:
+          $ref: '#/components/schemas/LegalEntityScreeningStatus'
+        screeningStatusUpdateDateTime:
+          type: string
+          format: date-time
+        ownerType:
+          $ref: '#/components/schemas/EntityOwnerType'
+        bankAccounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/BeneficiaryBankAccount'
+      description: Beneficiary Resource Object
+    BeneficiaryCreateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+        - migrate
+        - direct
+    CorporationType:
+      type: string
+      enum:
+        - ltd
+        - plc
+        - llp
+        - lp
+        - gp
+        - st
+        - other
+    EntityOwnerType:
+      type: string
+      enum:
+        - client
+        - tenant
+    LegalEntityIdentificationNumberMap:
+      type: object
+    LegalEntityIdentity:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - corporate
+            - individual
+      discriminator:
+        propertyName: type
+        mapping:
+          corporate: '#/components/schemas/LegalEntityIdentityCorporate'
+          individual: '#/components/schemas/LegalEntityIdentityIndividual'
+
+    LegalEntityIdentityCorporate:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/LegalEntityIdentity'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/LegalEntityType'
+            country:
+              type: string
+            identificationNumbers:
+              $ref: '#/components/schemas/LegalEntityIdentificationNumberMap'
+            legalName:
+              type: string
+            incorporationDate:
+              type: string
+              format: date
+            corporationType:
+              $ref: '#/components/schemas/CorporationType'
+    LegalEntityIdentityIndividual:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/LegalEntityIdentity'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/LegalEntityType'
+            country:
+              type: string
+            identificationNumbers:
+              $ref: '#/components/schemas/LegalEntityIdentificationNumberMap'
+            givenName:
+              type: string
+            familyName:
+              type: string
+            birthDate:
+              type: string
+              format: date
+    LegalEntityRelationType:
+      type: string
+      enum:
+        - first-party
+        - third-party
+    LegalEntityScreeningStatus:
+      type: string
+      enum:
+        - no-match
+        - potential-match
+        - match
+        - skipped
+    PlatformAPIConnectContainer:
+      type: object
+    PlatformAPIMetadataContainer:
+      type: object
+    BeneficiaryCreateConnect:
+      type: string
+      description: service provider selection type
+      enum:
+        - implicit
+        - explicit
+    BeneficiaryCreateMetadataContainer:
+      type: object
+    BeneficiaryCreateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryCreateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryCreateMetadataContainer'
+      description: request model
+    ServiceProvider:
+      type: string
+      description: 'account is connected to this service provider '
+      enum:
+        - CLT
+        - DHB
+        - RLB
+        - FXR
+        - KCL
+        - CLB
+        - TCC
+    BeneficiariesListDataContainer:
+      type: object
+      properties:
+        beneficiary:
+          $ref: '#/components/schemas/BeneficiaryResourceListQueryInput'
+        beneficiaries:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/Beneficiary'
+    BeneficiaryListConnectContainer:
+      type: object
+    BeneficiaryListMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    BeneficiaryListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/ClientListWorkflow'
+        data:
+          $ref: '#/components/schemas/BeneficiariesListDataContainer'
+        connect:
+          $ref: '#/components/schemas/BeneficiaryListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryListMetadataContainer'
+    BeneficiaryResourceListQueryInput:
+      type: object
+      properties:
+        clientId:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/LegalEntityType'
+        country:
+          type: string
+        title:
+          type: string
+    ClientListWorkflow:
+      type: object
+      description: workflow container
+    BeneficiaryGetWorkflow:
+      type: object
+      description: workflow container
+    BeneficiaryGetDataContainer:
+      required:
+        - beneficiary
+      type: object
+      properties:
+        beneficiary:
+          $ref: '#/components/schemas/Beneficiary'
+    BeneficiaryGetMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    BeneficiaryGetResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryGetWorkflow'
+        data:
+          $ref: '#/components/schemas/BeneficiaryGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/BeneficiaryCreateConnect'
+        metadata:
+          $ref: '#/components/schemas/BeneficiaryGetMetadataContainer'
+    BeneficiariesUpdateMetadataContainer:
+      type: object
+      description: metadata container
+    BeneficiaryUpdateWorkflowContainer:
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/BeneficiaryUpdateWorkflow'
+      description: Descriptor that navigates IF platform from which workflow does that operation runs
+    BeneficiaryUpdateWorkflow:
+      type: string
+      description: workflow code
+      enum:
+        - direct
+        - migrate
+    ClientUpdateResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiariesUpdateMetadataContainer'
+      description: Clients API Update Response
+    BeneficiaryUpdateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/BeneficiaryUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/BeneficiaryUpdateRequestDataContainer'
+        connect:
+          $ref: '#/components/schemas/AccountUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/BeneficiariesUpdateMetadataContainer'
+      description: request model
+    OutgoingTransferDateMetadataConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferDateMetadataDataContainer:
+      type: object
+      properties:
+        nextAvailableDateFrom:
+          type: string
+          format: date
+        nextAvailableDate:
+          type: string
+          description: next available date for transfers with given properties
+          format: date
+          readOnly: true
+        nextCutoffDateTime:
+          type: string
+          description: cutoff date time for next available date, null if payment scheme supports 24/7
+          format: date-time
+          readOnly: true
+        unavailableDates:
+          uniqueItems: true
+          type: array
+          description: array of unavailable dates for transfer with given properties
+          readOnly: true
+          items:
+            type: string
+            description: array of unavailable dates for transfer with given properties
+            format: date
+            readOnly: true
+      description: data container
+    OutgoingTransferDateMetadataMetadataContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferDateMetadataResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferDateMetadataMetadataContainer'
+      description: response model
+    OutgoingTransferDateMetadataWorkflowContainer:
+      type: object
+      description: workflow container
+    ClientAccountOutgoingTransferSourceResource:
+      type: object
+      description: source container for transfers from client accounts
+      allOf:
+        - $ref: '#/components/schemas/OutgoingTransferSourceResource'
+        - type: object
+          properties:
+            accountId:
+              type: string
+              description: client account id
+              format: uuid
+    InformationSourcingMethod:
+      type: string
+      description: configures where the information for pricing will be sourced
+      enum:
+        - explicit
+        - implicit
+    OutgoingTransferCreateConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferCreateDataContainer:
+      required:
+        - outgoingTransfer
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+      description: data container
+    OutgoingTransferCreateMetadataContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferCreateResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferCreateMetadataContainer'
+      description: response model
+    OutgoingTransferCreateWorkflowContainer:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+            - client.direct
+        dryRun:
+          type: boolean
+          description: dry run flag to validate the request
+          default: false
+        pricing:
+          $ref: '#/components/schemas/PricingCalculationWorkflowConfiguration'
+      description: workflow container
+    OutgoingTransferDestinationAccountResource:
+      type: object
+      description: destination container for transfers to accounts
+      allOf:
+        - $ref: '#/components/schemas/OutgoingTransferDestinationResource'
+        - type: object
+          properties:
+            accountId:
+              type: string
+              description: destination account id
+              format: uuid
+    OutgoingTransferDestinationBeneficiaryBankAccountResource:
+      type: object
+      description: destination container for transfers to external beneficiary accounts
+      allOf:
+        - $ref: '#/components/schemas/OutgoingTransferDestinationResource'
+        - type: object
+          properties:
+            beneficiaryBankAccountId:
+              type: string
+              description: destination beneficiary bank account id
+              format: uuid
+    OutgoingTransferDestinationResource:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: outgoing transfer destination container
+      discriminator:
+        propertyName: type
+    OutgoingTransferResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of outgoing transfer
+          format: uuid
+        transactionNumber:
+          maxLength: 15
+          minLength: 15
+          type: string
+          description: unique transaction number
+          readOnly: true
+        clientId:
+          type: string
+          description: id of client
+          format: uuid
+        transferDate:
+          type: string
+          description: date when transfer is executed, if account is not funded transfer will be rolled to next date and this field will be updated
+          format: date
+        status:
+          $ref: '#/components/schemas/OutgoingTransferStatus'
+        currency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of outgoing transfer
+        amount:
+          type: number
+          description: transfer amount
+        feeCurrency:
+          maxLength: 3
+          minLength: 3
+          type: string
+          description: ISO 4217 currency code of fee
+          readOnly: true
+        feeAmount:
+          type: number
+          description: transfer fee amount
+          readOnly: true
+        description:
+          type: string
+          description: free text to send along with transfer
+        incomingTransferId:
+          type: string
+          description: id of created incoming transfer if this is an internal outgoing transfer
+          format: uuid
+        transferReasonId:
+          type: string
+          description: id of transfer reason
+          format: uuid
+        transferCustomReason:
+          type: string
+          description: free text reason if transfer reason selected as other
+        originalTransferDate:
+          type: string
+          description: requested transfer date. this field won't be updated even if the transfer is rolled to next date
+          format: date
+        cutOffDateTime:
+          type: string
+          description: cutoff time in current transfer date
+          format: date-time
+        rollCount:
+          type: integer
+          description: how many times a transfer is rolled since account is unfunded until cutoff time
+          format: int32
+        onBehalfOf:
+          type: string
+          format: uuid
+        ownerType:
+          type: string
+          description: owner of the outgoing transfer
+          enum:
+            - client
+            - instance
+        destination:
+          $ref: '#/components/schemas/OutgoingTransferDestinationResource'
+        source:
+          $ref: '#/components/schemas/OutgoingTransferSourceResource'
+        scheme:
+          $ref: '#/components/schemas/TransferScheme'
+        scope:
+          $ref: '#/components/schemas/TransferScope'
+        totalAmount:
+          type: number
+          description: total amount including fee, filled if charging method is on-source
+      description: outgoing transfer model
+      readOnly: true
+    OutgoingTransferSourceResource:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+      discriminator:
+        propertyName: type
+    OutgoingTransferStatus:
+      type: string
+      description: status of outgoing transfer
+      enum:
+        - pending
+        - on-hold
+        - processing
+        - released
+        - completed
+        - cancelled
+        - failed
+    PricingCalculationWorkflowConfiguration:
+      type: object
+      properties:
+        dryRun:
+          type: boolean
+        sourcingMethod:
+          $ref: '#/components/schemas/InformationSourcingMethod'
+        enabled:
+          type: boolean
+          description: determines weather pricing will be applied or not
+        chargingType:
+          $ref: '#/components/schemas/PricingChargingType'
+        chargingMethod:
+          $ref: '#/components/schemas/PricingChargingMethod'
+      description: pricing workflow contex
+    PricingCalculationWorkflowDataInput:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          type: string
+      description: pricing data input
+      discriminator:
+        propertyName: type
+    PricingCalculationWorkflowFixedDataInput:
+      type: object
+      description: pricing data ratio based input
+      allOf:
+        - $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+        - type: object
+          properties:
+            enabled:
+              $ref: '#/components/schemas/PricingDefinitionType'
+            amount:
+              type: number
+              description: fixed pricing amount
+            currency:
+              type: string
+              description: fixed pricing amount currency
+    PricingCalculationWorkflowRatioDataInpu:
+      type: object
+      description: pricing data ratio based input
+      allOf:
+        - $ref: '#/components/schemas/PricingCalculationWorkflowDataInput'
+        - type: object
+          properties:
+            enabled:
+              $ref: '#/components/schemas/PricingDefinitionType'
+            ratio:
+              type: number
+              description: pricing ratio
+            boundaryCurrency:
+              type: string
+              description: minimum &amp; maximum boundary amounts currency
+            minimumAmount:
+              type: number
+              description: minimum amount bound for the pricing
+            maximumAmount:
+              type: number
+              description: maximum amount bound for the pricing
+    PricingChargingMethod:
+      type: string
+      description: configures where this action will be charged from
+      enum:
+        - on-source
+    PricingChargingType:
+      type: string
+      description: configures how this action will be charged
+      enum:
+        - fee
+        - markup
+    PricingDefinitionType:
+      type: string
+      description: determines weather pricing will be applied or not
+      enum:
+        - fixed
+        - ratio
+    TreasuryAccountOutgoingTransferSourceResource:
+      type: object
+      description: source container for transfers from treasury accounts
+      allOf:
+        - $ref: '#/components/schemas/OutgoingTransferSourceResource'
+        - type: object
+          properties:
+            accountId:
+              type: string
+              description: treasury account id
+              format: uuid
+    HttpHeaders:
+      type: object
+      properties:
+        headers:
+          type: object
+          properties:
+            empty:
+              type: boolean
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        empty:
+          type: boolean
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    MultiValueMapStringString:
+      type: object
+      properties:
+        empty:
+          type: boolean
+      additionalProperties:
+        type: array
+        items:
+          type: string
+    ResponseEntityOutgoingTransferCreateResponse:
+      type: object
+      properties:
+        headers:
+          type: object
+          properties:
+            headers:
+              type: object
+              properties:
+                empty:
+                  type: boolean
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+            empty:
+              type: boolean
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        body:
+          $ref: '#/components/schemas/OutgoingTransferCreateResponse'
+        status:
+          type: object
+    OutgoingTransferCreateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferCreateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferCreateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferCreateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferCreateMetadataContainer'
+      description: request model
+    OutgoingTransferListConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferListDataContainer:
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResourceQueryInput'
+        outgoingTransfers:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    OutgoingTransferListMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+      description: metadata container
+    OutgoingTransferListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferListMetadataContainer'
+      description: response model
+    OutgoingTransferListWorkflowContainer:
+      type: object
+      description: workflow container
+    OutgoingTransferResourceQueryInput:
+      type: object
+      properties:
+        transferDateFrom:
+          type: string
+          format: date
+        transferDateTo:
+          type: string
+          format: date
+        status:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferStatus'
+        transactionNumber:
+          type: array
+          items:
+            type: string
+        amountFrom:
+          type: number
+        amountTo:
+          type: number
+        currency:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        clientId:
+          type: array
+          items:
+            type: string
+            format: uuid
+        accountId:
+          type: array
+          items:
+            type: string
+            format: uuid
+    OutgoingTransferGetConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferGetDataContainer:
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    OutgoingTransferGetMetadataContainer:
+      type: object
+      properties:
+        include:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        expand:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      description: metadata container
+    OutgoingTransferGetResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferGetWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferGetDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferGetConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferGetMetadataContainer'
+      description: response model
+    OutgoingTransferGetWorkflowContainer:
+      type: object
+      description: workflow container
+    OutgoingTransferMetadataConnectContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferUpdateConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferUpdateDataContainer:
+      required:
+        - outgoingTransfer
+      type: object
+      properties:
+        outgoingTransfer:
+          $ref: '#/components/schemas/OutgoingTransferResource'
+      description: data container
+    OutgoingTransferUpdateResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferMetadataConnectContainer'
+      description: response model
+    OutgoingTransferUpdateWorkflowContainer:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: workflow code
+          enum:
+            - client.direct
+      description: workflow container
+    OutgoingTransferUpdateRequest:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferUpdateWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferUpdateDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferUpdateConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferMetadataConnectContainer'
+      description: request model
+    OutgoingTransferReasonListConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferReasonListDataContainer:
+      type: object
+      properties:
+        transferReasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferReasonResource'
+      description: data container
+    OutgoingTransferReasonListMetadataContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferReasonListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferReasonListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferReasonListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferReasonListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferReasonListMetadataContainer'
+        transferReasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/OutgoingTransferReasonResource'
+      description: response model
+    OutgoingTransferReasonListWorkflowContainer:
+      type: object
+      description: workflow container
+    OutgoingTransferReasonResource:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of outgoing transfer reason
+          format: uuid
+        description:
+          type: string
+          description: description of reason
+      description: outgoing transfer reason model
+    OutgoingTransferSchemeListResponse:
+      type: object
+      properties:
+        workflow:
+          $ref: '#/components/schemas/OutgoingTransferTypeListWorkflowContainer'
+        data:
+          $ref: '#/components/schemas/OutgoingTransferTypeListDataContainer'
+        connect:
+          $ref: '#/components/schemas/OutgoingTransferTypeListConnectContainer'
+        metadata:
+          $ref: '#/components/schemas/OutgoingTransferTypeListMetadataContainer'
+      description: response model
+    OutgoingTransferTypeListConnectContainer:
+      type: object
+      description: connect container
+    OutgoingTransferTypeListDataContainer:
+      type: object
+      properties:
+        accountId:
+          type: string
+          description: ID of source account
+          format: uuid
+        destinationCountry:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: ISO 3166-1 alpha-2 country code of destination account
+        transferSchemes:
+          type: array
+          description: external transfer scheme list
+          items:
+            $ref: '#/components/schemas/TransferScheme'
+      description: data container
+    OutgoingTransferTypeListMetadataContainer:
+      type: object
+      description: metadata container
+    OutgoingTransferTypeListWorkflowContainer:
+      type: object
+      description: workflow container
